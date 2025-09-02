@@ -1,0 +1,21 @@
+<svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="46" y1="0" x2="0" y2="46" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4C7CF6"/>
+      <stop offset="1" stop-color="#9A56F7"/>
+    </linearGradient>
+  </defs>
+  <rect x="0.5" y="0.5" width="45" height="45" rx="12" fill="url(#g)"/>
+  <g fill="white">
+    <!-- Chat bubble -->
+    <path d="M12 15c0-2.209 1.791-4 4-4h14c2.209 0 4 1.791 4 4v7c0 2.209-1.791 4-4 4H20.5l-4.7 3.5c-.8.6-1.8-.2-1.6-1.1L14 26.1c-1.2-.7-2-2-2-3.5V15z"/>
+    <!-- Bot antenna -->
+    <rect x="22" y="9" width="2" height="4" rx="1"/>
+    <circle cx="23" cy="8" r="2"/>
+    <!-- Eyes -->
+    <circle cx="18" cy="19" r="1.8"/>
+    <circle cx="28" cy="19" r="1.8"/>
+    <!-- Smile -->
+    <path d="M18 22.5c1.3 1.3 3 2 5 2s3.7-.7 5-2" stroke="#4C7CF6" stroke-width="2" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
