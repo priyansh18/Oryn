@@ -9,4 +9,8 @@ Fresh and modern; brings clarity from the source.
 - fix(sidebar): resolve Tailwind typos (`text-xs`, `dark:border-white/15`, optional chaining)
 - feat(sidebar): add mobile menu close on navigation and chat select
 - style(sidebar): improve theme toggle track colors (`bg-gray-300` / `dark:bg-gray-600`)
+ - fix(chatbox): import default `Message` and use dark logo correctly
+ - fix(message): Tailwind class typos (`gap-2`, `rounded-full`, borders, colors)
+ - feat(message): show relative timestamps (e.g., "2 minutes ago")
+ - feat(chatbox): introduce basic ChatBox functionality (empty-state, message list)
 
