@@ -26,6 +26,8 @@ import { dummyChats, dummyUserData } from "../assets/assets";
         }else{
             document.documentElement.classList.remove('dark');
         }
+
+        localStorage.setItem('theme',theme)
     },[theme])
 
     useEffect(()=>{
@@ -42,7 +44,7 @@ import { dummyChats, dummyUserData } from "../assets/assets";
     },[])
 
     const value = {
-        navigate,user,setUser,fetchUser,chats,setChats,selectedChat,setSelectedChat,theme
+        navigate,user,setUser,fetchUser,chats,setChats,selectedChat,setSelectedChat,theme,setTheme
     }
 
     return(
