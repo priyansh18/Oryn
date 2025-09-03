@@ -8,7 +8,7 @@ import Community from './pages/Community'
 const App = () => {
   return (
     <>
-      <div className='dark:bg-gradient-to-b from-[#242124] to [#00000] dark:text-white'>
+      <div className='dark:bg-gradient-to-b from-[#242124] to-[#00000] dark:text-white'>
         <div className='flex h-screen w-screen'>
           <Sidebar />
           <Routes>
