@@ -13,4 +13,5 @@ Fresh and modern; brings clarity from the source.
  - fix(message): Tailwind class typos (`gap-2`, `rounded-full`, borders, colors)
  - feat(message): show relative timestamps (e.g., "2 minutes ago")
  - feat(chatbox): introduce basic ChatBox functionality (empty-state, message list)
+ - fix(chatbox): attach containerRef to scrollable div for auto-scroll to bottom
 
