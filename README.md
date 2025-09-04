@@ -9,11 +9,20 @@ Fresh and modern; brings clarity from the source.
 - fix(auth): add missing `bcrypt` import in `server/controllers/userController.js`
 - docs(api): clarify usage of JWT `Authorization` header for protected route
 - docs(api): list core user endpoints and expected request/response shapes
+- feat(chat): add Chat model, routes and controllers (create/get/delete)
 
 #### Backend API notes
 - `POST /api/user/register` → body: `{ name, email, password }` → returns `{ success, token }`
 - `POST /api/user/login` → body: `{ email, password }` → returns `{ success, token }`
 - `GET /api/user/data` → header: `Authorization: <token>` → returns `{ success, user }`
+
+Chat endpoints (JWT required unless noted):
+- `GET /api/chat/create` → header: `Authorization: <token>` → `{ success, message }`
+- `GET /api/chat/get` → header: `Authorization: <token>` → `{ success, chats }`
+- `POST /api/chat/delete` → body: `{ chatId }` and header: `Authorization: <token>` → `{ success, message }`
+
+Chat model highlights:
+- `userId`, `userName`, `name`, `messages[]` with `role`, `content`, `timestamp`, `isImage`, `isPublished`
 
 Env requirements (server):
 - `MONGODB_URI` for database connection

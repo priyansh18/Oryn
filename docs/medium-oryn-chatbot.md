@@ -69,6 +69,19 @@
   - `GET /api/user/data` (protected) → header `Authorization: <token>` → `{ success, user }`
 - Server entry: `server/server.js` wires routes and CORS, connects DB.
 
+### Backend: Chat API
+- Model: `server/models/Chat.js`
+  - Fields: `userId`, `userName`, `name`, `messages[]`
+  - `messages[]` items include: `role`, `content`, `timestamp`, `isImage`, `isPublished`
+- Controller: `server/controllers/chatController.js`
+  - `createChat` creates a new chat for the authenticated user
+  - `getChats` fetches chats for the authenticated user, sorted by `updatedAt`
+  - `deleteChat` removes a chat by id for the authenticated user
+- Routes: `server/routes/chatRoutes.js`
+  - `GET /api/chat/create` (protected) → `{ success, message }`
+  - `GET /api/chat/get` (protected) → `{ success, chats }`
+  - `POST /api/chat/delete` (protected) → body `{ chatId }` → `{ success, message }`
+
 Env requirements (server):
 - `MONGODB_URI` — MongoDB connection string
 - `JWT_SECRET` — JWT signing/verification secret
