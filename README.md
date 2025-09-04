@@ -14,4 +14,6 @@ Fresh and modern; brings clarity from the source.
  - feat(message): show relative timestamps (e.g., "2 minutes ago")
  - feat(chatbox): introduce basic ChatBox functionality (empty-state, message list)
  - fix(chatbox): attach containerRef to scrollable div for auto-scroll to bottom
+- feat(community): complete image gallery with hover effects and user attribution
+- feat(loading): add auto-redirect spinner with gradient background
 
