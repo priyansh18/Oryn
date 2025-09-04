@@ -12,7 +12,7 @@ import { dummyChats, dummyUserData } from "../assets/assets";
     const [theme,setTheme] = useState(localStorage.getItem('theme') || 'light');
 
     const fetchUser = async () => {
-        setUser(dummyUserData)
+        setUser()
     }
 
     const fetchUserChats = async () => {
