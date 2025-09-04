@@ -2,56 +2,61 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { dummyChats, dummyUserData } from "../assets/assets";
 
- const AppContext = createContext()
+const AppContext = createContext();
 
- export const AppContextProvider =  ({children}) => {
-    const navigate = useNavigate()
-    const [user,setUser] = useState(null);
-    const [chats,setChats] = useState([]);
-    const [selectedChat,setSelectedChat] = useState(null);
-    const [theme,setTheme] = useState(localStorage.getItem('theme') || 'light');
+export const AppContextProvider = ({ children }) => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [chats, setChats] = useState([]);
+  const [selectedChat, setSelectedChat] = useState(null);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
-    const fetchUser = async () => {
-        setUser()
+  const fetchUser = async () => {
+    setUser();
+  };
+
+  const fetchUserChats = async () => {
+    setChats(dummyChats);
+    setSelectedChat(dummyChats[0]);
+  };
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
 
-    const fetchUserChats = async () => {
-        setChats(dummyChats)
-        setSelectedChat(dummyChats[0])
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  useEffect(() => {
+    if (user) {
+      fetchUserChats();
+    } else {
+      setChats([]);
+      setSelectedChat(null);
     }
+  }, [user]);
 
-    useEffect(()=>{
-        if(theme==='dark'){
-            document.documentElement.classList.add('dark');
-        }else{
-            document.documentElement.classList.remove('dark');
-        }
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
-        localStorage.setItem('theme',theme)
-    },[theme])
+  const value = {
+    navigate,
+    user,
+    setUser,
+    fetchUser,
+    chats,
+    setChats,
+    selectedChat,
+    setSelectedChat,
+    theme,
+    setTheme,
+  };
 
-    useEffect(()=>{
-        if(user){ 
-            fetchUserChats() 
-        }else{
-            setChats([])
-            setSelectedChat(null)
-        } 
-    },[user])
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+};
 
-    useEffect(()=>{
-        fetchUser()
-    },[])
-
-    const value = {
-        navigate,user,setUser,fetchUser,chats,setChats,selectedChat,setSelectedChat,theme,setTheme
-    }
-
-    return(
-        <AppContext.Provider value={value}>
-            {children}
-        </AppContext.Provider>
-    )
- }
-
- export const useAppContext = ()=> useContext(AppContext)
+export const useAppContext = () => useContext(AppContext);
