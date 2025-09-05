@@ -10,6 +10,7 @@ Fresh and modern; brings clarity from the source.
 - docs(api): clarify usage of JWT `Authorization` header for protected route
 - docs(api): list core user endpoints and expected request/response shapes
 - feat(chat): add Chat model, routes and controllers (create/get/delete)
+- feat(credits): add Credits API and `Transaction` model (purchase, webhook, history)
 
 #### Backend API notes
 - `POST /api/user/register` → body: `{ name, email, password }` → returns `{ success, token }`
@@ -23,6 +24,14 @@ Chat endpoints (JWT required unless noted):
 
 Chat model highlights:
 - `userId`, `userName`, `name`, `messages[]` with `role`, `content`, `timestamp`, `isImage`, `isPublished`
+
+Credits endpoints (JWT required unless noted):
+- `POST /api/user/credits/create-order` → body: `{ planId }` → `{ success, order }`
+- `POST /api/user/credits/webhook` (public) → Razorpay style payload → `{ success }`
+- `GET /api/user/credits/history` → returns `{ success, transactions }`
+
+Transaction model highlights:
+- `server/models/Transaction.js` with fields like `userId`, `amount`, `planId`, `status`, `gatewayRef`, `createdAt`.
 
 Env requirements (server):
 - `MONGODB_URI` for database connection

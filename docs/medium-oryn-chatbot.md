@@ -82,6 +82,17 @@
   - `GET /api/chat/get` (protected) → `{ success, chats }`
   - `POST /api/chat/delete` (protected) → body `{ chatId }` → `{ success, message }`
 
+### Backend: Credits & Transactions
+- Model: `server/models/Transaction.js` — stores purchase history and gateway refs
+- Controller: `server/controllers/creditController.js`
+  - `createOrder` creates a payment order for a credits plan
+  - `webhookHandler` verifies gateway signature and updates credits + transaction
+  - `getHistory` returns authenticated user credit transactions
+- Routes: `server/routes/userRoutes.js` (credits-related endpoints under `/api/user/credits/*`)
+  - `POST /api/user/credits/create-order` (protected)
+  - `POST /api/user/credits/webhook` (public, called by gateway)
+  - `GET /api/user/credits/history` (protected)
+
 Env requirements (server):
 - `MONGODB_URI` — MongoDB connection string
 - `JWT_SECRET` — JWT signing/verification secret
