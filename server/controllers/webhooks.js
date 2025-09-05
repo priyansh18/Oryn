@@ -6,7 +6,7 @@ import User from "../models/User.js";
 export const stripeWebhooks = async (req, res) => {
   // Initialize Stripe with secret key
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-  
+
   // Get Stripe signature from headers for webhook verification
   const sig = req.headers["stripe-signature"];
 
@@ -27,7 +27,7 @@ export const stripeWebhooks = async (req, res) => {
       case "payment_intent.succeeded": {
         // Payment was successfully completed
         const paymentIntent = event.data.object;
-        
+
         // Find the checkout session associated with this payment
         const sessionList = await stripe.checkout.sessions.list({
           payment_intent: paymentIntent.id,
@@ -40,18 +40,18 @@ export const stripeWebhooks = async (req, res) => {
         if (appId === "oryn") {
           // Find the unpaid transaction in our database
           const transaction = await Transaction.findOne({ _id: transactionId, isPaid: false });
-          
+
           if (transaction) {
             // Add credits to user's account
             await User.updateOne(
               { _id: transaction.userId },
               { $inc: { credits: transaction.credits } },
             );
-            
+
             // Mark transaction as paid to prevent duplicate processing
             transaction.isPaid = true;
             await transaction.save();
-            
+
             console.log(`Credits added: ${transaction.credits} for user ${transaction.userId}`);
           } else {
             console.warn(`Transaction ${transactionId} not found or already processed`);
