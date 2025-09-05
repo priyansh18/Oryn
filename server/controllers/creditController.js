@@ -1,4 +1,5 @@
-import Transaction from "../models/Transaction";
+import Transaction from "../models/Transaction.js";
+import Stripe from "stripe";
 
 const plans = [
   {
@@ -51,6 +52,8 @@ export const getPlans = async (req, res) => {
   }
 };
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_dummy");
+
 // API Controller for purchasing a plans
 export const purchasePlans = async (req, res) => {
   try {
@@ -69,7 +72,32 @@ export const purchasePlans = async (req, res) => {
       credits: plan.credits,
       isPaid: false,
     });
-    res.json({ success: true, plans });
+
+    const { origin } = req.headers;
+    if (!origin) {
+      return res.json({ success: false, message: "Origin header is required" });
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            unit_amount: plan.price * 100,
+            product_data: {
+              name: plan.name,
+            },
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${origin}/loading`,
+      cancel_url: `${origin}`,
+      metadata: { transactionId: transaction._id.toString(), appId: "oryn" },
+      expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+    });
+    res.json({ success: true, url: session.url });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
