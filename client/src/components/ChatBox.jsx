@@ -36,15 +36,26 @@ const ChatBox = () => {
       {/* Chat Messages */}
       <div ref={containerRef} className="flex-1 mb-5 overflow-y-scroll">
         {messages.length === 0 && (
-          <div className="h-full flex flex-col items-center justify-center gap-2 text-primary">
-            <img
-              src={theme === "dark" ? assets.logo_full_dark : assets.logo_full}
-              alt=""
-              className="w-full max-w-56 sm:max-w-68"
-            />
-            <p className="mt-5 text-4xl sm:text-6xl text-center text-gray-400 dark:text-white">
+          <div className="h-full flex flex-col items-center justify-center gap-6 text-primary animate-fade-in">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-2xl">
+                <span className="text-white font-bold text-2xl">O</span>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Oryn
+                </h1>
+                <p className="text-sm text-gray-500 dark:text-gray-400">AI Assistant</p>
+              </div>
+            </div>
+            <p className="text-4xl sm:text-6xl text-center text-gray-400 dark:text-white font-light">
               Ask me anything.
             </p>
+            <div className="flex gap-2 mt-4">
+              <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+              <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+            </div>
           </div>
         )}
 
@@ -54,10 +65,13 @@ const ChatBox = () => {
 
         {/* Three Dots Loading */}
         {loading && (
-          <div className="loader flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce"></div>
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce"></div>
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce"></div>
+          <div className="flex items-center gap-2 p-4 bg-white/50 dark:bg-[#57317C]/20 border border-gray-200 dark:border-[#80609F]/30 rounded-xl max-w-2xl">
+            <div className="flex gap-1">
+              <div className="w-2 h-2 rounded-full bg-purple-500 animate-bounce"></div>
+              <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style={{animationDelay: '0.1s'}}></div>
+              <div className="w-2 h-2 rounded-full bg-pink-500 animate-bounce" style={{animationDelay: '0.2s'}}></div>
+            </div>
+            <span className="text-sm text-gray-600 dark:text-gray-300 ml-2">Oryn is thinking...</span>
           </div>
         )}
       </div>
@@ -77,34 +91,37 @@ const ChatBox = () => {
       {/* Prompt Input Box */}
       <form
         onSubmit={onSubmit}
-        className="bg-primary/20 dark:bg-[#583C79]/30 border border-primary dark:border-[#80609F]/30 rounded-full w-full max-w-2xl p-3 pl-4 mx-auto flex gap-4 items-center"
+        className="group bg-white/80 dark:bg-[#583C79]/30 border border-gray-200 dark:border-[#80609F]/30 rounded-2xl w-full max-w-2xl p-4 mx-auto flex gap-4 items-center shadow-lg hover:shadow-xl transition-all duration-300 focus-within:ring-2 focus-within:ring-purple-500/50"
         action=""
       >
         <select
           onChange={(e) => setMode(e.target.value)}
           value={mode}
-          className="text-sm pl-3 pr-2 outline-none"
+          className="text-sm px-3 py-2 outline-none bg-transparent border border-gray-200 dark:border-[#80609F]/30 rounded-lg cursor-pointer hover:border-purple-500 transition-colors duration-300"
         >
           <option className="dark:bg-purple-900" value="text">
-            Text
+            💬 Text
           </option>
           <option className="dark:bg-purple-900" value="image">
-            Image
+            🖼️ Image
           </option>
         </select>
         <input
           onChange={(e) => setPrompt(e.target.value)}
           value={prompt}
           type="text"
-          placeholder="Type your prompt here..."
-          className="flex-1 w-full text-sm outline-none "
+          placeholder="Ask Oryn anything..."
+          className="flex-1 w-full text-sm outline-none bg-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500"
           required
         />
-        <button disabled={loading}>
+        <button 
+          disabled={loading}
+          className="group/btn p-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 hover:shadow-lg"
+        >
           <img
             src={loading ? assets.stop_icon : assets.send_icon}
-            className="w-8 cursor-pointer"
-            alt=""
+            className="w-6 h-6 cursor-pointer group-hover/btn:scale-110 transition-transform duration-300"
+            alt={loading ? "Stop" : "Send"}
           />
         </button>
       </form>
