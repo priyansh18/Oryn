@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import Message from "./Message";
+import toast from "react-hot-toast";
 
 const ChatBox = () => {
   const containerRef = useRef(null);
-  const { selectedChat, theme } = useAppContext();
+  const { selectedChat, theme,user,axios,token,setUser } = useAppContext();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
@@ -13,7 +14,33 @@ const ChatBox = () => {
   const [isPublished, setIsPublished] = useState(false);
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    try{
+      e.preventDefault();
+      if(!user) return toast.error("Please login to use this feature");
+      setLoading(true);
+      const promptCopy  = prompt;
+      setPrompt("");
+        setMessages(prev=>[...prev,{role:'user',content:prompt,timestamp:Date.now(),isImage:false}]);
+
+      const {data} = await axios.post(`/api/message/${mode}`,{chatId:selectedChat._id,prompt,isPublished},{headers:{Authorization:token}});
+      if(data.success){
+        setMessages(prev=>[...prev,data.reply]);
+        if(mode=="image"){
+          setUser(prev=>({...prev,credits:prev.credits-2}));
+        }else{
+          setUser(prev=>({...prev,credits:prev.credits-1}));
+        }
+      }else{
+        toast.error(data.message);
+        setPrompt(promptCopy);
+      }
+
+    }catch(error){
+      toast.error(error.message);
+    }finally{
+      setPrompt('');
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -53,8 +80,14 @@ const ChatBox = () => {
             </p>
             <div className="flex gap-2 mt-4">
               <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></div>
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-              <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+              <div
+                className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"
+                style={{ animationDelay: "0.1s" }}
+              ></div>
+              <div
+                className="w-2 h-2 bg-pink-500 rounded-full animate-bounce"
+                style={{ animationDelay: "0.2s" }}
+              ></div>
             </div>
           </div>
         )}
@@ -68,10 +101,18 @@ const ChatBox = () => {
           <div className="flex items-center gap-2 p-4 bg-white/50 dark:bg-[#57317C]/20 border border-gray-200 dark:border-[#80609F]/30 rounded-xl max-w-2xl">
             <div className="flex gap-1">
               <div className="w-2 h-2 rounded-full bg-purple-500 animate-bounce"></div>
-              <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style={{animationDelay: '0.1s'}}></div>
-              <div className="w-2 h-2 rounded-full bg-pink-500 animate-bounce" style={{animationDelay: '0.2s'}}></div>
+              <div
+                className="w-2 h-2 rounded-full bg-blue-500 animate-bounce"
+                style={{ animationDelay: "0.1s" }}
+              ></div>
+              <div
+                className="w-2 h-2 rounded-full bg-pink-500 animate-bounce"
+                style={{ animationDelay: "0.2s" }}
+              ></div>
             </div>
-            <span className="text-sm text-gray-600 dark:text-gray-300 ml-2">Oryn is thinking...</span>
+            <span className="text-sm text-gray-600 dark:text-gray-300 ml-2">
+              Oryn is thinking...
+            </span>
           </div>
         )}
       </div>
@@ -114,7 +155,7 @@ const ChatBox = () => {
           className="flex-1 w-full text-sm outline-none bg-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500"
           required
         />
-        <button 
+        <button
           disabled={loading}
           className="group/btn p-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 hover:shadow-lg"
         >
